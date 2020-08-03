@@ -17,7 +17,7 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*.github.com/*?tab=repositories"
+        "*://*.github.com/*?tab=repositories*"
       ],
       "js": [
         "index.js"
