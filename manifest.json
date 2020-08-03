@@ -2,18 +2,25 @@
   "manifest_version": 2,
   "name": "github-filter-repo-by-topic",
   "version": "1.0",
-  "description": "Adds a red border to all webpages matching mozilla.org.",
+  "description": "Adds a browser action icon to the toolbar. Adds a red border to all webpages matching mozilla.org.",
   "icons": {
     "48": "icons/github-filter-repo-by-topic-48.png",
     "96": "icons/github-filter-repo-by-topic-96.png"
   },
+  "permissions": [
+    "activeTab"
+  ],
+  "browser_action": {
+    "default_icon": "icons/github-filter-repo-by-topic-32.png",
+    "default_title": "Github filter repo by Topic"
+  },
   "content_scripts": [
     {
       "matches": [
-        "*://*.mozilla.org/*"
+        "*://*.github.com/*?tab=repositories"
       ],
       "js": [
-        "borderify.js"
+        "index.js"
       ]
     }
   ]
