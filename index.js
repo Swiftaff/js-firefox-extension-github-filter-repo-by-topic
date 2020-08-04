@@ -1,18 +1,18 @@
 (function () {
-    if (window.hasRun) {
-        return;
-    }
+    if (window.hasRun) return;
     window.hasRun = true;
-
-    let all_topic_tags = document.querySelectorAll(".topic-tag");
-
-    addTopicDropdown();
-
+    addTopicDropdownToPage();
+    let filter = document.getElementById("filter-by-topics");
+    //setTimeout(() => {
+    //    filter.outerHTML = filter.outerHTML;
+    //}, 1000);
     document.body.style.border = "5px solid red";
 })();
 
-function addTopicDropdown() {
-    //generate a new 'Topic' dropdown like the others...
+function addTopicDropdownToPage() {
+    let { all_topic_tags, all_repositories } = getTopicsAndRepos();
+
+    //generate a new 'Topic' dropdown like the other dropdowns, such as Type...
     //pasted here in case it changes in future
     /*
     <details class="details-reset details-overlay position-relative mr-2" id="type-options" open="">
@@ -72,7 +72,7 @@ function addTopicDropdown() {
     </details>
     */
 
-    //create necessary dom elements
+    //create necessary main dom elements
     let details = createDetails();
     let summary = createSummary();
     let i = createI();
@@ -86,13 +86,8 @@ function addTopicDropdown() {
     let closeButtonSVG = createCloseButtonSVG();
     let closeButtonSVGPath = createCloseButtonSVGPath();
     let selectMenuList = createSelectMenuList();
-    let label = createLabel();
-    let input = createInput();
-    let checkButtonSVG = createCheckButtonSVG();
-    let checkButtonSVGPath = createCheckButtonSVGPath();
-    let ItemText = createItemText();
 
-    //create the necessary hierarchy of dom elements
+    //create the necessary main hierarchy of dom elements
     details.appendChild(summary);
     summary.appendChild(i);
     summary.appendChild(span1);
@@ -105,11 +100,21 @@ function addTopicDropdown() {
     closeButton.appendChild(closeButtonSVG);
     closeButtonSVG.appendChild(closeButtonSVGPath);
     selectModal.appendChild(selectMenuList);
-    selectMenuList.appendChild(label);
-    label.appendChild(input);
-    label.appendChild(checkButtonSVG);
-    checkButtonSVG.appendChild(checkButtonSVGPath);
-    label.appendChild(ItemText);
+
+    //loop over repos, and create dom elements for list
+    all_topic_tags.map((topic) => {
+        let label = createLabel(topic, all_repositories);
+        //let input = createInput();
+        let checkButtonSVG = createCheckButtonSVG();
+        let checkButtonSVGPath = createCheckButtonSVGPath();
+        let itemText = createItemText(topic);
+
+        selectMenuList.appendChild(label);
+        //label.appendChild(input);
+        label.appendChild(checkButtonSVG);
+        checkButtonSVG.appendChild(checkButtonSVGPath);
+        label.appendChild(itemText);
+    });
 
     //insert dropdown before first dropdown
     let first_details = document.getElementById("type-options");
@@ -117,8 +122,47 @@ function addTopicDropdown() {
     parent_of_details.insertBefore(details, first_details);
 }
 
+function getTopicsAndRepos() {
+    //create array of all repos on the page as {node, href, text, topics}
+    let all_repositories = [...document.querySelectorAll("a[itemprop='name codeRepository']")]
+        .map((a) => ({
+            //get the parent Li of the repo link, so you can show hide it later with the filter
+            repo: a,
+            li: a.parentNode.parentNode.parentNode.parentNode,
+            href: a.href,
+            text: a.text.replace(/\s+/g, " ").trim(),
+            topics: [
+                ...a.parentNode.parentNode.parentNode.parentNode.querySelectorAll("a[data-octo-click='topic_click']"),
+            ].map((t) => t.text),
+        }))
+        .sort((a, b) => a.text.localeCompare(b.text));
+
+    //create array of all topics on the page
+    let all_topic_tags = [...document.querySelectorAll("a[data-octo-click='topic_click']")].map((a) => ({
+        text: a.text,
+        repositories: all_repositories.filter((r) => r.topics.includes(a.text)),
+    }));
+
+    //& remove duplicates, and sort
+    let comparison = [];
+    all_topic_tags = all_topic_tags
+        .filter((t) => {
+            if (!comparison.includes(t.text)) {
+                comparison.push(t.text);
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .sort((a, b) => a.text.localeCompare(b.text));
+
+    //& add first All item
+    all_topic_tags.unshift({ text: "All", repositories: all_repositories });
+    return { all_topic_tags, all_repositories };
+}
+
 function createDetails() {
-    let el = document.createElement("details");
+    let el = document.createElement("filterByTopics");
     el.setAttribute("id", "filter-by-topics");
     el.className = "details-reset details-overlay position-relative mr-2";
     return el;
@@ -175,7 +219,7 @@ function createHeader() {
 function createSelectMenuTitle() {
     let el = document.createElement("span");
     el.className = "SelectMenu-title";
-    let text = document.createTextNode("Select type");
+    let text = document.createTextNode("Select topic on this page");
     el.appendChild(text);
     return el;
 }
@@ -216,13 +260,23 @@ function createSelectMenuList() {
     return el;
 }
 
-function createLabel() {
+function createLabel(topic, all_repositories) {
     let el = document.createElement("label");
     el.className = "SelectMenu-item";
     el.setAttribute("role", "menuitemradio");
     el.setAttribute("aria-checked", "true");
     el.setAttribute("tabindex", "0");
+    el.addEventListener("mouseup", (_) => clickToFilter(topic, all_repositories));
     return el;
+}
+
+function clickToFilter(topic, all_repositories) {
+    all_repositories.map((r) => r.li.setAttribute("hidden", "hidden"));
+    topic.repositories.map((r) => r.li.removeAttribute("hidden"));
+    //filter.outerHTML = filter.outerHTML;
+    el.addEventListener("mouseup", (_) => clickToFilter(topic, all_repositories));
+    console.log(topic);
+    document.body.style.border = "5px solid blue";
 }
 
 function createInput() {
@@ -232,7 +286,7 @@ function createInput() {
     el.setAttribute("name", "type");
     el.setAttribute("id", "topic_");
     el.setAttribute("value", "");
-    el.setAttribute("data-autosubmit", "true");
+    el.setAttribute("data-autosubmit", "false");
     el.setAttribute("checked", "checked");
     el.setAttribute("hidden", "hidden");
     return el;
@@ -260,19 +314,11 @@ function createCheckButtonSVGPath() {
     return el;
 }
 
-function createItemText() {
+function createItemText(topic) {
     let el = document.createElement("span");
     el.className = "text-normal";
     el.setAttribute("data-menu-button-text", "");
-    let text = document.createTextNode("All");
+    let text = document.createTextNode(topic.text + " (" + topic.repositories.length + ")");
     el.appendChild(text);
     return el;
 }
-
-/*
-<label class="SelectMenu-item" role="menuitemradio" aria-checked="true" tabindex="0">
-  <input type="radio" name="type" id="type_" value="" data-autosubmit="true" checked="checked" hidden="hidden">
-  <svg class="octicon octicon-check SelectMenu-icon SelectMenu-icon--check" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>
-  <span class="text-normal" data-menu-button-text="">All</span>
-</label>
-*/
