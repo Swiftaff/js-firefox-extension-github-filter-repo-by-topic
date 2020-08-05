@@ -2,11 +2,6 @@
     if (window.hasRun) return;
     window.hasRun = true;
     addTopicDropdownToPage();
-    let filter = document.getElementById("filter-by-topics");
-    //setTimeout(() => {
-    //    filter.outerHTML = filter.outerHTML;
-    //}, 1000);
-    document.body.style.border = "5px solid red";
 })();
 
 function addTopicDropdownToPage() {
@@ -86,6 +81,7 @@ function addTopicDropdownToPage() {
     let closeButtonSVG = createCloseButtonSVG();
     let closeButtonSVGPath = createCloseButtonSVGPath();
     let selectMenuList = createSelectMenuList();
+    let img = createImage();
 
     //create the necessary main hierarchy of dom elements
     details.appendChild(summary);
@@ -120,6 +116,9 @@ function addTopicDropdownToPage() {
     let first_details = document.getElementById("type-options");
     let parent_of_details = first_details.parentNode;
     parent_of_details.insertBefore(details, first_details);
+
+    //display icon last - as a basic visual indicator that the code has loaded correctly
+    i.prepend(img);
 }
 
 function getTopicsAndRepos() {
@@ -165,7 +164,24 @@ function createDetails() {
     let el = document.createElement("filterByTopics");
     el.setAttribute("id", "filter-by-topics");
     el.className = "details-reset details-overlay position-relative mr-2";
+    el.addEventListener("mouseup", (_) => toggleDropdown());
     return el;
+}
+
+function toggleDropdown() {
+    console.log("toggleDropdown");
+    let el = document.getElementById("filterbytopicmenu");
+    console.log("1");
+    let a = el.hasAttribute("hidden");
+    console.log("2");
+    console.log("3", el);
+    if (a) {
+        console.log("hide");
+        el.removeAttribute("hidden");
+    } else {
+        console.log("show");
+        el.setAttribute("hidden", "hidden");
+    }
 }
 
 function createSummary() {
@@ -200,6 +216,8 @@ function createSpan2() {
 function createDetailsMenu() {
     let el = document.createElement("details-menu");
     el.setAttribute("role", "menu");
+    el.setAttribute("id", "filterbytopicmenu");
+    el.setAttribute("hidden", "hidden");
     el.className = "SelectMenu right-md-0";
     return el;
 }
@@ -266,17 +284,13 @@ function createLabel(topic, all_repositories) {
     el.setAttribute("role", "menuitemradio");
     el.setAttribute("aria-checked", "true");
     el.setAttribute("tabindex", "0");
-    el.addEventListener("mouseup", (_) => clickToFilter(topic, all_repositories));
+    el.addEventListener("mouseover", (_) => clickToFilter(topic, all_repositories));
     return el;
 }
 
 function clickToFilter(topic, all_repositories) {
     all_repositories.map((r) => r.li.setAttribute("hidden", "hidden"));
     topic.repositories.map((r) => r.li.removeAttribute("hidden"));
-    //filter.outerHTML = filter.outerHTML;
-    el.addEventListener("mouseup", (_) => clickToFilter(topic, all_repositories));
-    console.log(topic);
-    document.body.style.border = "5px solid blue";
 }
 
 function createInput() {
@@ -320,5 +334,13 @@ function createItemText(topic) {
     el.setAttribute("data-menu-button-text", "");
     let text = document.createTextNode(topic.text + " (" + topic.repositories.length + ")");
     el.appendChild(text);
+    return el;
+}
+
+function createImage() {
+    let url = browser.runtime.getURL("icons/github-filter-repo-by-topic-96.png");
+    let el = document.createElement("img");
+    el.setAttribute("src", url);
+    el.style = "height: 20px;padding: 0 4px 0 0; margin-bottom: -5px;";
     return el;
 }

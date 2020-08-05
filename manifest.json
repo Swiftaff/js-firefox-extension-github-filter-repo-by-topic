@@ -7,6 +7,9 @@
     "48": "icons/github-filter-repo-by-topic-48.png",
     "96": "icons/github-filter-repo-by-topic-96.png"
   },
+  "web_accessible_resources": [
+    "icons/github-filter-repo-by-topic-96.png"
+  ],
   "permissions": [
     "activeTab"
   ],
