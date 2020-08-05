@@ -1,7 +1,13 @@
 (function () {
     if (window.hasRun) return;
     window.hasRun = true;
+    window.firstMutationDetected = false;
+    //addTopicDropdownToPage();
+    //window.addEventListener("DOMContentLoaded", function () {
+    console.log("loaded");
     addTopicDropdownToPage();
+    checkForMutations();
+    //});
 })();
 
 function addTopicDropdownToPage() {
@@ -169,17 +175,11 @@ function createDetails() {
 }
 
 function toggleDropdown() {
-    console.log("toggleDropdown");
     let el = document.getElementById("filterbytopicmenu");
-    console.log("1");
     let a = el.hasAttribute("hidden");
-    console.log("2");
-    console.log("3", el);
     if (a) {
-        console.log("hide");
         el.removeAttribute("hidden");
     } else {
-        console.log("show");
         el.setAttribute("hidden", "hidden");
     }
 }
@@ -343,4 +343,36 @@ function createImage() {
     el.setAttribute("src", url);
     el.style = "height: 20px;padding: 0 4px 0 0; margin-bottom: -5px;";
     return el;
+}
+
+function checkForMutations() {
+    setTimeout(() => {
+        const targetNode = document.querySelector("#user-repositories-list");
+        const observerOptions = {
+            childList: true,
+            //attributes: true,
+
+            // Omit (or set to false) to observe only changes to the parent node
+            subtree: true,
+        };
+
+        const observer = new MutationObserver(callback);
+        observer.observe(targetNode, observerOptions);
+    }, 2000);
+}
+
+function callback(mutationList, observer) {
+    if (window.firstMutationDetected === false) {
+        console.log("test");
+        const previousTopicButton = document.querySelector("#filter-by-topics");
+        if (previousTopicButton) {
+            previousTopicButton.parentNode.removeChild(previousTopicButton);
+        }
+
+        window.firstMutationDetected = true;
+        setTimeout(() => {
+            addTopicDropdownToPage();
+            window.firstMutationDetected = false;
+        }, 2000);
+    }
 }
