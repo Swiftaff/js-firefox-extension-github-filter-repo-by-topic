@@ -24,6 +24,9 @@
         "*://*.github.com/*?after=*&tab=repositories*",
         "*://*.github.com/*?before=*&tab=repositories*"
       ],
+      "css": [
+        "css.css"
+      ],
       "js": [
         "index.js"
       ]
