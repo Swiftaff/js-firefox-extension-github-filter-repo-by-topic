@@ -2,12 +2,9 @@
     if (window.hasRun) return;
     window.hasRun = true;
     window.firstMutationDetected = false;
-    //addTopicDropdownToPage();
-    //window.addEventListener("DOMContentLoaded", function () {
     console.log("loaded");
     addTopicDropdownToPage();
     checkForMutations();
-    //});
 })();
 
 function addTopicDropdownToPage() {
