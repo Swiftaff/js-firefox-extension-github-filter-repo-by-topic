@@ -2,6 +2,8 @@
 
 Helps you quickly find your related Github repositories grouped by Topic!
 
+![Github Filter Repo By Topic Gif](github-filter-repo-by-topic.gif)
+
 This extension adds a "Topic" button to your Github repository page.
 Yes, you can already use the "topic:html" syntax to search for a topic, but who can remember all the topics you might have used in the past?
 
