@@ -243,14 +243,25 @@ function createCloseButton() {
 }
 
 function createCloseButtonSVG() {
-    let html = `<svg version="1.1" class="octicon octicon-x" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    aria-label="Close menu" width="16"  height="16" role="img" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/>
-    </svg>`;
-    var wrapper = document.createElement("div");
-    wrapper.innerHTML = html;
-    let el = wrapper.firstChild;
-    return el;
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "octicon octicon-x");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("version", "1.1");
+    svg.setAttribute("width", "16");
+    svg.setAttribute("height", "16");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("aria-label", "Close menu");
+
+    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("fill-rule", "evenodd");
+    path.setAttribute(
+        "d",
+        "M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"
+    );
+
+    svg.appendChild(path);
+
+    return svg;
 }
 
 function createSelectMenuList() {
@@ -300,14 +311,25 @@ function createInput() {
 }
 
 function createCheckButtonSVG() {
-    let html = `<svg version="1.1" class="height0 filter-by-topic-check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    aria-label="Close menu" width="16"  height="16" role="img" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
-    </svg>`;
-    var wrapper = document.createElement("div");
-    wrapper.innerHTML = html;
-    let el = wrapper.firstChild;
-    return el;
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "height0 filter-by-topic-check octicon octicon-check");
+    svg.setAttribute("viewBox", "0 0 16 16");
+    svg.setAttribute("version", "1.1");
+    svg.setAttribute("width", "16");
+    svg.setAttribute("height", "16");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("aria-label", "Select topic filter");
+
+    let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("fill-rule", "evenodd");
+    path.setAttribute(
+        "d",
+        "M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"
+    );
+
+    svg.appendChild(path);
+
+    return svg;
 }
 
 function createItemText(topic) {
@@ -360,18 +382,31 @@ function callback(mutationList, observer) {
 function spinnerCreate() {
     const spinner = document.querySelector("#filter-by-topic-spinner");
     if (!spinner) {
-        let html = `<svg id="filter-by-topic-spinner" style="-webkit-animation: spin 4s infinite linear;"
-    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-    aria-hidden="true" focusable="false" width="0.97em"  height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1664 1728">
-      <path d="M462 1394q0 53-37.5 90.5T334 1522q-52 0-90-38t-38-90q0-53 37.5-90.5T334 1266t90.5 37.5T462 1394zm498 206q0 53-37.5 90.5T832 1728t-90.5-37.5T704 1600t37.5-90.5T832 1472t90.5 37.5T960 1600zM256 896q0 53-37.5 90.5T128 1024t-90.5-37.5T0 896t37.5-90.5T128 768t90.5 37.5T256 896zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5T1202 1394t37.5-90.5t90.5-37.5t90.5 37.5t37.5 90.5zM494 398q0 66-47 113t-113 47t-113-47t-47-113t47-113t113-47t113 47t47 113zm1170 498q0 53-37.5 90.5T1536 1024t-90.5-37.5T1408 896t37.5-90.5T1536 768t90.5 37.5T1664 896zm-640-704q0 80-56 136t-136 56t-136-56t-56-136t56-136T832 0t136 56t56 136zm530 206q0 93-66 158.5T1330 622q-93 0-158.5-65.5T1106 398q0-92 65.5-158t158.5-66q92 0 158 66t66 158z" fill="#626262"/>
-    </svg>`;
-        var wrapper = document.createElement("div");
-        wrapper.innerHTML = html;
-        let el = wrapper.firstChild;
+        let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("id", "filter-by-topic-spinner");
+        svg.setAttribute("style", "-webkit-animation: spin 4s infinite linear;");
+        svg.setAttribute("viewBox", "0 0 1664 1728");
+        svg.setAttribute("version", "1.1");
+        svg.setAttribute("width", "16");
+        svg.setAttribute("height", "16");
+        svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("focusable", "false");
+        svg.setAttribute("aria-label", "Select topic filter");
+
+        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+        path.setAttribute("fill", "#626262");
+        path.setAttribute(
+            "d",
+            "M462 1394q0 53-37.5 90.5T334 1522q-52 0-90-38t-38-90q0-53 37.5-90.5T334 1266t90.5 37.5T462 1394zm498 206q0 53-37.5 90.5T832 1728t-90.5-37.5T704 1600t37.5-90.5T832 1472t90.5 37.5T960 1600zM256 896q0 53-37.5 90.5T128 1024t-90.5-37.5T0 896t37.5-90.5T128 768t90.5 37.5T256 896zm1202 498q0 52-38 90t-90 38q-53 0-90.5-37.5T1202 1394t37.5-90.5t90.5-37.5t90.5 37.5t37.5 90.5zM494 398q0 66-47 113t-113 47t-113-47t-47-113t47-113t113-47t113 47t47 113zm1170 498q0 53-37.5 90.5T1536 1024t-90.5-37.5T1408 896t37.5-90.5T1536 768t90.5 37.5T1664 896zm-640-704q0 80-56 136t-136 56t-136-56t-56-136t56-136T832 0t136 56t56 136zm530 206q0 93-66 158.5T1330 622q-93 0-158.5-65.5T1106 398q0-92 65.5-158t158.5-66q92 0 158 66t66 158z"
+        );
+
+        svg.appendChild(path);
 
         let first_details = document.getElementById("type-options");
         let parent_of_details = first_details.parentNode;
-        parent_of_details.insertBefore(el, first_details);
+        parent_of_details.insertBefore(svg, first_details);
     }
 }
 
