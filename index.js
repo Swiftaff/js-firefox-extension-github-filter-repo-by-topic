@@ -163,7 +163,7 @@ function getTopicsAndRepos() {
 }
 
 function createDetails() {
-    let el = document.createElement("filterByTopics");
+    let el = document.createElement("details");
     el.setAttribute("id", "filter-by-topics");
     el.className = "details-reset details-overlay position-relative mr-2";
     el.addEventListener("mouseup", (_) => toggleDropdown());
@@ -171,12 +171,12 @@ function createDetails() {
 }
 
 function toggleDropdown() {
-    let el = document.getElementById("filterbytopicmenu");
-    let a = el.hasAttribute("hidden");
+    let el = document.getElementById("filter-by-topics");
+    let a = el.hasAttribute("open");
     if (a) {
-        el.removeAttribute("hidden");
+        el.setAttribute("open", "open");
     } else {
-        el.setAttribute("hidden", "hidden");
+        el.removeAttribute("open");
     }
 }
 
@@ -213,7 +213,6 @@ function createDetailsMenu() {
     let el = document.createElement("details-menu");
     el.setAttribute("role", "menu");
     el.setAttribute("id", "filterbytopicmenu");
-    el.setAttribute("hidden", "hidden");
     el.className = "SelectMenu right-md-0";
     return el;
 }
@@ -254,17 +253,6 @@ function createCloseButtonSVG() {
     var wrapper = document.createElement("div");
     wrapper.innerHTML = html;
     let el = wrapper.firstChild;
-
-    /*
-    let el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    el.className = "octicon octicon-x";
-    el.setAttribute("aria-label", "Close menu");
-    el.setAttribute("viewBox", "0 0 16 16");
-    el.setAttribute("version", "1.1");
-    el.setAttribute("width", "16");
-    el.setAttribute("height", "16");
-  el.setAttribute("role", "img");
-  */
     return el;
 }
 
@@ -315,24 +303,13 @@ function createInput() {
 }
 
 function createCheckButtonSVG() {
-    let html = `<svg version="1.1" class="filter-by-topic-check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+    let html = `<svg version="1.1" class="height0 filter-by-topic-check octicon octicon-check" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
     aria-label="Close menu" width="16"  height="16" role="img" viewBox="0 0 16 16">
       <path fill-rule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
     </svg>`;
     var wrapper = document.createElement("div");
     wrapper.innerHTML = html;
     let el = wrapper.firstChild;
-
-    /*
-    let el = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    el.className = "octicon octicon-check";
-    el.setAttribute("aria-label", "Close menu");
-    el.setAttribute("viewBox", "0 0 16 16");
-    el.setAttribute("version", "1.1");
-    el.setAttribute("width", "16");
-    el.setAttribute("height", "16");
-  el.setAttribute("role", "img");
-  */
     return el;
 }
 
