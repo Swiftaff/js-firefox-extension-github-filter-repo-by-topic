@@ -1,5 +1,6 @@
 # Github Filter Repo By Topic Button Extension
 
+[Github filter by Topic](https://addons.mozilla.org/en-US/firefox/addon/github-filter-repo-by-topic/)
 Helps you quickly find your related Github repositories grouped by Topic!
 
 ![Github Filter Repo By Topic Gif](github-filter-repo-by-topic.gif)
